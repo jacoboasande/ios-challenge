@@ -13,12 +13,14 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var tableView: UITableView!
     var viewModel: ListViewModel!
     var cancellables = Set<AnyCancellable>()
+    private var expandedIndexPaths = Set<IndexPath>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .white
         setupTableView()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
         setupViewModel()
     }
 
@@ -27,14 +29,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
 
-        // Register custom cell
         tableView.register(ListingTableViewCell.self, forCellReuseIdentifier: ListingTableViewCell.reuseIdentifier)
 
-        // Set delegates
         tableView.dataSource = self
         tableView.delegate = self
 
-        // Set constraints
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -44,19 +43,15 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func setupViewModel() {
-        // Initialize your ViewModel
         viewModel = ListViewModel()
 
-        // Bind ViewModel data to TableView
         viewModel.$listings
-            .receive(on: DispatchQueue.main) // 🛠️ Required for UI updates
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
             }
             .store(in: &cancellables)
 
-
-        // Fetch data
         viewModel.fetchListings()
     }
 
@@ -66,19 +61,34 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return viewModel.listings.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListingTableViewCell.reuseIdentifier, for: indexPath) as! ListingTableViewCell
-        let listing = viewModel.listings[indexPath.row]
-        cell.configure(with: listing)
-        print("Rendering cell for: \(listing.address)")
-        return cell
+    func tableView(_ tv: UITableView, cellForRowAt ip: IndexPath) -> UITableViewCell {
+      let cell = tv.dequeueReusableCell(withIdentifier: ListingTableViewCell.reuseIdentifier, for: ip) as! ListingTableViewCell
+      cell.delegate = self
+      let listing = viewModel.listings[ip.row]
+      let expanded = expandedIndexPaths.contains(ip)
+      cell.configure(with: listing, isExpanded: expanded)
+      return cell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let listing = viewModel.listings[indexPath.row]
-//        // Push to details screen (e.g., AdDetailViewController)
-//        let detailVC = AdDetailViewController()
-//        detailVC.listing = listing
-//        navigationController?.pushViewController(detailVC, animated: true)
+    func tableView(_ tv: UITableView, didSelectRowAt ip: IndexPath) {
+      tv.deselectRow(at: ip, animated: true)
     }
+}
+
+// MARK: – ListingCellDelegate
+
+extension ListViewController: ListingCellDelegate {
+  func listingCell(_ cell: ListingTableViewCell, didToggleExpanded expanded: Bool) {
+    guard let ip = tableView.indexPath(for: cell) else { return }
+
+    if expanded {
+      expandedIndexPaths.insert(ip)
+    } else {
+      expandedIndexPaths.remove(ip)
+    }
+
+    tableView.beginUpdates()
+    cell.setExpanded(expanded)
+    tableView.endUpdates()
+  }
 }

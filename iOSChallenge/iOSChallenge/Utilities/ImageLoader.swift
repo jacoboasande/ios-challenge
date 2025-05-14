@@ -16,19 +16,15 @@ final class ImageLoader {
     private init() {}
 
     func load(from url: URL, into imageView: UIImageView, placeholder: UIImage? = nil) {
-        // Cancel any existing request for this imageView
         cancel(for: imageView)
 
-        // Check cache
         if let cached = cache.object(forKey: url as NSURL) {
             imageView.image = cached
             return
         }
 
-        // Set placeholder (optional)
         imageView.image = placeholder
 
-        // Start download
         let task = URLSession.shared.dataTask(with: url) { [weak self, weak imageView] data, _, error in
             guard
                 let self = self,
@@ -46,7 +42,6 @@ final class ImageLoader {
             }
         }
 
-        // Track the request
         runningRequests[imageView] = task
         task.resume()
     }

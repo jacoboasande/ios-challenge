@@ -15,21 +15,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
 
-        // Safely unwrap UIWindowScene
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        // Create the window using the windowScene
         let window = UIWindow(windowScene: windowScene)
 
-        // Initialize your root view controller
         let listVC = ListViewController()
         let navController = UINavigationController(rootViewController: listVC)
 
-        // Set the root view controller
         window.rootViewController = navController
         self.window = window
 
-        // Make the window visible
         window.makeKeyAndVisible()
     }
 }
