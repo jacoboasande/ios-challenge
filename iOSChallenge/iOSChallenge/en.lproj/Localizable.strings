@@ -1,0 +1,9 @@
+//
+//  Localizable.strings
+//  iOSChallenge
+//
+//  Created by Jacobo Adrián Sande Veiga on 14/5/25.
+//
+
+"propertyType.flat" = "Flat";
+"propertyType.house" = "House";
