@@ -7,3 +7,5 @@
 
 "propertyType.flat" = "Flat";
 "propertyType.house" = "House";
+"operationType.sale" = "Sale";
+"operationType.rent" = "Rent";

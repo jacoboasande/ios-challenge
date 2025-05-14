@@ -16,6 +16,7 @@ class ListingTableViewCell: UITableViewCell {
 
     private let priceLabel = UILabel()
     private let infoLabel = UILabel()
+    private let secondInfoLabel = UILabel()
     private let containerStack = UIStackView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -44,8 +45,11 @@ class ListingTableViewCell: UITableViewCell {
         infoLabel.font = UIFont.systemFont(ofSize: 12)
         infoLabel.textColor = .darkGray
         infoLabel.numberOfLines = 1
+        secondInfoLabel.font = UIFont.systemFont(ofSize: 12)
+        secondInfoLabel.textColor = .darkGray
+        secondInfoLabel.numberOfLines = 1
 
-        let textStack = UIStackView(arrangedSubviews: [addressLabel, secondAddressLabel, priceLabel, infoLabel])
+        let textStack = UIStackView(arrangedSubviews: [addressLabel, secondAddressLabel, priceLabel, infoLabel, secondInfoLabel])
         textStack.axis = .vertical
         textStack.spacing = 4
 
@@ -77,8 +81,8 @@ class ListingTableViewCell: UITableViewCell {
         secondAddressLabel.text = "\(listing.province) - \(listing.neighborhood)"
 
         priceLabel.text = formattedPrice(listing.price)
-
-        infoLabel.text = "🏠 \(listing.size) m² · 🛏 \(listing.rooms) · 🛁 \(listing.bathrooms)"
+        infoLabel.text = "📄 \(listing.operation.localized)"
+        secondInfoLabel.text = "🏠 \(listing.size) m² · 🛏 \(listing.rooms) · 🛁 \(listing.bathrooms)"
 
         thumbnailImageView.setImage(from: listing.thumbnail, placeholder: UIImage(systemName: "photo"))
     }

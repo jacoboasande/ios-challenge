@@ -14,7 +14,7 @@ struct ListItem: Codable {
     let price: Double
     let priceInfo: PriceInfoWrapper
     let propertyType: PropertyType
-    let operation: String
+    let operation: OperationType
     let size: Double
     let exterior: Bool
     let rooms: Int
@@ -38,5 +38,14 @@ enum PropertyType: String, Codable {
 
     var localized: String {
         return NSLocalizedString("propertyType.\(rawValue)", comment: "")
+    }
+}
+
+enum OperationType: String, Codable {
+    case sale
+    case rent
+
+    var localized: String {
+        return NSLocalizedString("operationType.\(rawValue)", comment: "")
     }
 }
