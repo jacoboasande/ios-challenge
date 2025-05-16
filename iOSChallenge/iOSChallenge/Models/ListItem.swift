@@ -30,22 +30,5 @@ struct ListItem: Codable {
     let description: String
     let multimedia: Multimedia
     let features: Features
-}
-
-enum PropertyType: String, Codable {
-    case flat
-    case house
-
-    var localized: String {
-        return NSLocalizedString("propertyType.\(rawValue)", comment: "")
-    }
-}
-
-enum OperationType: String, Codable {
-    case sale
-    case rent
-
-    var localized: String {
-        return NSLocalizedString("operationType.\(rawValue)", comment: "")
-    }
+    let parkingSpace: ParkingSpace?
 }

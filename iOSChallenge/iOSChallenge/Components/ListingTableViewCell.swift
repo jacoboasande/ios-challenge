@@ -116,7 +116,8 @@ class ListingTableViewCell: UITableViewCell {
         secondAddressLabel.text = "\(listing.province) - \(listing.neighborhood)"
         priceLabel.text = formattedPrice(listing.price)
         infoLabel.text = "📄 \(listing.operation.localized)"
-        secondInfoLabel.text = "🏠 \(listing.size) m² · 🛏 \(listing.rooms) · 🛁 \(listing.bathrooms)"
+        let hasParkingSpace = listing.parkingSpace?.hasParkingSpace ?? false
+        secondInfoLabel.text = "🏠 \(listing.size) m² · 🛏 \(listing.rooms) · 🛁 \(listing.bathrooms)\(hasParkingSpace ? " - Parking Incl." : "")"
         thumbnailImageView.setImage(from: listing.thumbnail)
 
         images = listing.multimedia.images.map { $0.url }
