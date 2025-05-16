@@ -20,6 +20,8 @@ class ListingTableViewCell: UITableViewCell {
     private let secondInfoLabel = UILabel()
     private let expandButton = UIButton(type: .system)
     private let imagesCollectionView: UICollectionView
+    private let favoriteButton = UIButton(type: .system)
+
 
     private var images: [String] = []
     private var isExpanded = false
@@ -63,6 +65,12 @@ class ListingTableViewCell: UITableViewCell {
         expandButton.layer.borderColor = UIColor.white.cgColor
         expandButton.addTarget(self, action: #selector(didTapExpand), for: .touchUpInside)
 
+        favoriteButton.tintColor = .systemYellow
+        favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
+        favoriteButton.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        favoriteButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         imagesCollectionView.isHidden = true
         imagesCollectionView.dataSource = self
@@ -72,7 +80,7 @@ class ListingTableViewCell: UITableViewCell {
         textStack.axis = .vertical
         textStack.spacing = 4
 
-        let topRow = UIStackView(arrangedSubviews: [thumbnailImageView, textStack, expandButton])
+        let topRow = UIStackView(arrangedSubviews: [thumbnailImageView, textStack, favoriteButton, expandButton])
         topRow.axis = .horizontal
         topRow.alignment = .center
         topRow.spacing = 12
@@ -100,6 +108,11 @@ class ListingTableViewCell: UITableViewCell {
         delegate?.listingCell(self, didToggleExpanded: !isExpanded)
     }
 
+    @objc private func didTapFavorite() {
+        delegate?.listingCellDidTapFavorite(self)
+    }
+
+
     func setExpanded(_ expand: Bool) {
         isExpanded = expand
         expandButton.setTitle(expand ? "▲" : "▼", for: .normal)
@@ -111,7 +124,7 @@ class ListingTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(with listing: ListItem, isExpanded: Bool) {
+    func configure(with listing: ListItem, isExpanded: Bool, isFavorite: Bool) {
         addressLabel.text = "\(listing.propertyType.localized) en \(listing.address)"
         secondAddressLabel.text = "\(listing.province) - \(listing.neighborhood)"
         priceLabel.text = formattedPrice(listing.price)
@@ -124,6 +137,9 @@ class ListingTableViewCell: UITableViewCell {
         imagesCollectionView.reloadData()
 
         setExpanded(isExpanded)
+
+        let starName = isFavorite ? "star.fill" : "star"
+        favoriteButton.setImage(UIImage(systemName: starName), for: .normal)
     }
 
     private func formattedPrice(_ price: Double) -> String {
@@ -160,4 +176,5 @@ extension ListingTableViewCell: UICollectionViewDataSource {
 
 protocol ListingCellDelegate: AnyObject {
     func listingCell(_ cell: ListingTableViewCell, didToggleExpanded expanded: Bool)
+    func listingCellDidTapFavorite(_ cell: ListingTableViewCell)
 }

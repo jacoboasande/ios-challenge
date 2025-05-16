@@ -25,6 +25,17 @@ struct AdDetailView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    viewModel.toggleFavorite()
+                }) {
+                    SwiftUI.Image(systemName: viewModel.isFavorite ? "star.fill" : "star")
+                        .foregroundColor(.yellow)
+                        .accessibilityLabel(viewModel.isFavorite ? "Quitar de favoritos" : "Agregar a favoritos")
+                }
+            }
+        }
     }
 
     // MARK: - Subviews

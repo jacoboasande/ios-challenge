@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ListViewModel {
+class ListViewModel: ObservableObject {
     @Published var listings: [ListItem] = []
     @Published var isLoading: Bool = false
     @Published var error: String? = nil
@@ -33,5 +33,14 @@ class ListViewModel {
                 }
             }
         }
+    }
+
+    func isFavorite(propertyCode: String) -> Bool {
+        FavoritesManager.shared.isFavorite(propertyCode)
+    }
+
+    func toggleFavorite(propertyCode: String) {
+        FavoritesManager.shared.toggleFavorite(propertyCode)
+        objectWillChange.send()
     }
 }

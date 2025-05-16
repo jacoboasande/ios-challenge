@@ -26,6 +26,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setupViewModel()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
     func setupTableView() {
         tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,12 +69,13 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func tableView(_ tv: UITableView, cellForRowAt ip: IndexPath) -> UITableViewCell {
-      let cell = tv.dequeueReusableCell(withIdentifier: ListingTableViewCell.reuseIdentifier, for: ip) as! ListingTableViewCell
-      cell.delegate = self
-      let listing = viewModel.listings[ip.row]
-      let expanded = expandedIndexPaths.contains(ip)
-      cell.configure(with: listing, isExpanded: expanded)
-      return cell
+        let cell = tv.dequeueReusableCell(withIdentifier: ListingTableViewCell.reuseIdentifier, for: ip) as! ListingTableViewCell
+        cell.delegate = self
+        let listing = viewModel.listings[ip.row]
+        let expanded = expandedIndexPaths.contains(ip)
+        let isFav = viewModel.isFavorite(propertyCode: listing.propertyCode)
+        cell.configure(with: listing, isExpanded: expanded, isFavorite: isFav)
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -129,4 +135,12 @@ extension ListViewController: ListingCellDelegate {
     cell.setExpanded(expanded)
     tableView.endUpdates()
   }
+
+    func listingCellDidTapFavorite(_ cell: ListingTableViewCell) {
+        guard let ip = tableView.indexPath(for: cell) else { return }
+        let listing = viewModel.listings[ip.row]
+        viewModel.toggleFavorite(propertyCode: listing.propertyCode)
+        // Refresh the cell
+        tableView.reloadRows(at: [ip], with: .none)
+    }
 }
