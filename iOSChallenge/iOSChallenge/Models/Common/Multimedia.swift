@@ -13,7 +13,26 @@ struct Multimedia: Codable {
 
 struct Image: Codable {
     let url: String
-    let tag: String
+    let tag: ImageTag
     let localizedName: String?
     let multimediaId: Int?
 }
+
+enum ImageTag: String, Codable {
+    case bathroom
+    case bedroom
+    case corridor
+    case energyCertification
+    case facade
+    case hall
+    case kitchen
+    case livingRoom
+    case unknown
+    case views
+    case communalareas
+
+    var localized: String {
+        NSLocalizedString(self != .unknown ? "imagetag.\(rawValue)" : "", comment: "")
+    }
+}
+

@@ -13,13 +13,13 @@ struct AdDetail: Codable {
     let priceInfo: PriceInfo
     let operation: String
     let propertyType: String
-    let extendedPropertyType: String
+    let extendedPropertyType: PropertyType
     let homeType: String
     let state: String
     let multimedia: Multimedia
     let propertyComment: String
     let ubication: Location
     let country: String
-    let extra: MoreCharacteristics
+    let moreCharacteristics: MoreCharacteristics
     let energyCertification: EnergyCertification
 }

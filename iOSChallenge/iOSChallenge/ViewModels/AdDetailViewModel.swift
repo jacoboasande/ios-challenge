@@ -1,37 +1,25 @@
 //
-//  AdDetailViewModel.swift
+//  AdDetailViewModel 2.swift
 //  iOSChallenge
 //
-//  Created by Jacobo Adrián Sande Veiga on 14/5/25.
+//  Created by Jacobo Adrián Sande Veiga on 16/5/25.
 //
 
 import Foundation
 
-class AdDetailViewModel {
-    @Published var adDetail: AdDetail?
-    @Published var isLoading: Bool = false
-    @Published var error: String? = nil
-    
-    private let apiService: APIServiceProtocol
-    
-    init(apiService: APIServiceProtocol = APIService()) {
-        self.apiService = apiService
+class AdDetailViewModel: ObservableObject {
+    let listItem: ListItem
+    let detail: AdDetail
+
+    init(listItem: ListItem, detail: AdDetail) {
+        self.listItem = listItem
+        self.detail = detail
     }
-    
-    func fetchAdDetail(adId: Int) {
-        isLoading = true
-        error = nil
-        
-        apiService.fetchAdDetail(adId: adId) { result in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                switch result {
-                case .success(let adDetail):
-                    self.adDetail = adDetail
-                case .failure(let error):
-                    self.error = error.localizedDescription
-                }
-            }
-        }
+
+    var titleLine1: String {
+        "\(detail.extendedPropertyType.localized) en \(listItem.address)"
+    }
+    var titleLine2: String {
+        "\(listItem.province) - \(listItem.neighborhood)"
     }
 }

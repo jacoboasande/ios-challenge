@@ -7,12 +7,14 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var tableView: UITableView!
     var viewModel: ListViewModel!
     var cancellables = Set<AnyCancellable>()
+    private var loadingIndicator: UIActivityIndicatorView?
     private var expandedIndexPaths = Set<IndexPath>()
 
     override func viewDidLoad() {
@@ -70,8 +72,44 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
       return cell
     }
 
-    func tableView(_ tv: UITableView, didSelectRowAt ip: IndexPath) {
-      tv.deselectRow(at: ip, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let listing = viewModel.listings[indexPath.row]
+
+        showLoading()
+
+        APIService().fetchAdDetail(adId: Int(listing.propertyCode) ?? 0) { [weak self] result in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self?.hideLoading()
+                switch result {
+                case .success(let detail):
+                    let adViewModel = AdDetailViewModel(listItem: listing, detail: detail)
+                    let detailView = AdDetailView(viewModel: adViewModel)
+                    let hostingVC = UIHostingController(rootView: detailView)
+                    self?.navigationController?.pushViewController(hostingVC, animated: true)
+                case .failure(let error):
+                    print("Failed to fetch ad detail: \(error)")
+                    // Optionally show an alert here
+                }
+            }
+        }
+
+    }
+}
+
+extension ListViewController {
+    private func showLoading() {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.center = view.center
+        spinner.startAnimating()
+        spinner.hidesWhenStopped = true
+        view.addSubview(spinner)
+        loadingIndicator = spinner
+    }
+
+    private func hideLoading() {
+        loadingIndicator?.stopAnimating()
+        loadingIndicator?.removeFromSuperview()
+        loadingIndicator = nil
     }
 }
 

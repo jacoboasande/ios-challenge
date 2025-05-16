@@ -9,3 +9,15 @@
 "propertyType.house" = "House";
 "operationType.sale" = "Sale";
 "operationType.rent" = "Rent";
+
+"imagetag.bathroom" = "Bathroom";
+"imagetag.bedroom" = "Bedroom";
+"imagetag.corridor" = "Corridor";
+"imagetag.energyCertification" = "Energy Certification";
+"imagetag.facade" = "Facade";
+"imagetag.hall" = "Hall";
+"imagetag.kitchen" = "Kitchen";
+"imagetag.livingRoom" = "Living Room";
+"imagetag.unknown" = "Unknown";
+"imagetag.views" = "Views";
+"imagetag.communalareas" = "Communal Areas";
