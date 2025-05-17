@@ -40,6 +40,11 @@ class ListViewModel: ObservableObject {
     }
 
     func toggleFavorite(propertyCode: String) {
+        if isFavorite(propertyCode: propertyCode) {
+            AnalyticsEngine.shared.trackRemoveFavorite(propertyCode: propertyCode, from: .listView)
+        } else {
+            AnalyticsEngine.shared.trackAddFavorite(propertyCode: propertyCode, from: .listView)
+        }
         FavoritesManager.shared.toggleFavorite(propertyCode)
         objectWillChange.send()
     }

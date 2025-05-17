@@ -29,6 +29,11 @@ class AdDetailViewModel: ObservableObject {
     }
 
     func toggleFavorite() {
+        if isFavorite {
+            AnalyticsEngine.shared.trackRemoveFavorite(propertyCode: propertyCode, from: .detailView)
+        } else {
+            AnalyticsEngine.shared.trackAddFavorite(propertyCode: propertyCode, from: .detailView)
+        }
         FavoritesManager.shared.toggleFavorite(propertyCode)
         objectWillChange.send()
     }
