@@ -16,6 +16,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var cancellables = Set<AnyCancellable>()
     private var loadingIndicator: UIActivityIndicatorView?
     private var expandedIndexPaths = Set<IndexPath>()
+    private var refreshControl: UIRefreshControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,10 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.dataSource = self
         tableView.delegate = self
 
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshListings), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -56,6 +61,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
             .store(in: &cancellables)
 
@@ -94,7 +100,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     self?.navigationController?.pushViewController(hostingVC, animated: true)
                 case .failure(let error):
                     print("Failed to fetch ad detail: \(error)")
-                    // Optionally show an alert here
                 }
             }
         }
@@ -117,6 +122,14 @@ extension ListViewController {
         loadingIndicator?.removeFromSuperview()
         loadingIndicator = nil
     }
+
+    @objc private func refreshListings() {
+        viewModel.fetchListings()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.refreshControl.endRefreshing()
+        }
+    }
+
 }
 
 // MARK: – ListingCellDelegate
@@ -140,7 +153,6 @@ extension ListViewController: ListingCellDelegate {
         guard let ip = tableView.indexPath(for: cell) else { return }
         let listing = viewModel.listings[ip.row]
         viewModel.toggleFavorite(propertyCode: listing.propertyCode)
-        // Refresh the cell
         tableView.reloadRows(at: [ip], with: .none)
     }
 }

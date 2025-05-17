@@ -22,7 +22,6 @@ class ListingTableViewCell: UITableViewCell {
     private let imagesCollectionView: UICollectionView
     private let favoriteButton = UIButton(type: .system)
 
-
     private var images: [String] = []
     private var isExpanded = false
 
@@ -64,6 +63,8 @@ class ListingTableViewCell: UITableViewCell {
         expandButton.layer.borderWidth = 1
         expandButton.layer.borderColor = UIColor.white.cgColor
         expandButton.addTarget(self, action: #selector(didTapExpand), for: .touchUpInside)
+        expandButton.accessibilityIdentifier = "expandButton"
+
 
         favoriteButton.tintColor = .systemYellow
         favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
@@ -71,10 +72,13 @@ class ListingTableViewCell: UITableViewCell {
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         favoriteButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        favoriteButton.accessibilityIdentifier = "starButton"
 
         imagesCollectionView.isHidden = true
         imagesCollectionView.dataSource = self
         imagesCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ImgCell")
+        imagesCollectionView.isAccessibilityElement = true
+        imagesCollectionView.accessibilityIdentifier = "carouselCollectionView"
 
         let textStack = UIStackView(arrangedSubviews: [addressLabel, secondAddressLabel, priceLabel, infoLabel, secondInfoLabel])
         textStack.axis = .vertical
@@ -117,7 +121,16 @@ class ListingTableViewCell: UITableViewCell {
         isExpanded = expand
         expandButton.setTitle(expand ? "▲" : "▼", for: .normal)
         imagesCollectionView.isHidden = !expand
+        imagesCollectionView.layoutIfNeeded()
         expandButton.backgroundColor = expand ? .systemGray : .systemBlue
+        if expand {
+            imagesCollectionView.accessibilityLabel = "carouselCollectionView"
+            self.accessibilityIdentifier = "expandedCell"
+        } else {
+            imagesCollectionView.accessibilityLabel = nil
+            self.accessibilityIdentifier = nil
+        }
+
 
         if let heightConstraint = imagesCollectionView.constraints.first(where: { $0.firstAttribute == .height }) {
             heightConstraint.constant = expand ? 80 : 0

@@ -20,6 +20,7 @@ struct AdDetailView: View {
                 titleSection
                 priceSection
                 featuresSection
+                favoriteSection
                 descriptionSection
             }
             .padding()
@@ -178,6 +179,20 @@ struct AdDetailView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.blue)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var favoriteSection: some View {
+        if viewModel.isFavorite, let dateString = viewModel.favoritedDateString {
+            HStack(spacing: 6) {
+                SwiftUI.Image(systemName: "calendar")
+                    .foregroundColor(.orange)
+                Text("Añadido a favoritos el \(dateString)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.top, 2)
         }
     }
 }

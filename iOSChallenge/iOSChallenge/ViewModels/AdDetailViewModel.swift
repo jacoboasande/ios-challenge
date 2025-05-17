@@ -10,18 +10,26 @@ import Foundation
 class AdDetailViewModel: ObservableObject {
     let listItem: ListItem
     let detail: AdDetail
-    @Published var isFavorite: Bool
-
+    var isFavorite: Bool {
+        FavoritesManager.shared.isFavorite(propertyCode)
+    }
+    var propertyCode: String { listItem.propertyCode }
 
     init(listItem: ListItem, detail: AdDetail) {
         self.listItem = listItem
         self.detail = detail
-        self.isFavorite = FavoritesManager.shared.isFavorite(listItem.propertyCode)
+    }
+
+    var favoritedDateString: String? {
+        guard let date = FavoritesManager.shared.favoritedDate(propertyCode) else { return nil }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 
     func toggleFavorite() {
-        FavoritesManager.shared.toggleFavorite(listItem.propertyCode)
-        isFavorite = FavoritesManager.shared.isFavorite(listItem.propertyCode)
+        FavoritesManager.shared.toggleFavorite(propertyCode)
         objectWillChange.send()
     }
 

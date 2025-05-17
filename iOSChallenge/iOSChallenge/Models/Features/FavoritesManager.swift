@@ -9,36 +9,38 @@ import Foundation
 
 class FavoritesManager {
     static let shared = FavoritesManager()
-    private let favoritesKey = "favoritePropertyCodes"
+    private let favoritesKey = "favorites"
 
-    private init() {}
-
-    func allFavorites() -> [String] {
-        UserDefaults.standard.stringArray(forKey: favoritesKey) ?? []
+    private var favorites: [String: Date] {
+        get {
+            if let data = UserDefaults.standard.data(forKey: favoritesKey),
+               let dict = try? JSONDecoder().decode([String: Date].self, from: data) {
+                return dict
+            }
+            return [:]
+        }
+        set {
+            if let data = try? JSONEncoder().encode(newValue) {
+                UserDefaults.standard.set(data, forKey: favoritesKey)
+            }
+        }
     }
 
     func isFavorite(_ propertyCode: String) -> Bool {
-        allFavorites().contains(propertyCode)
+        favorites[propertyCode] != nil
     }
 
-    func addFavorite(_ propertyCode: String) {
-        var favorites = allFavorites()
-        guard !favorites.contains(propertyCode) else { return }
-        favorites.append(propertyCode)
-        UserDefaults.standard.setValue(favorites, forKey: favoritesKey)
-    }
-
-    func removeFavorite(_ propertyCode: String) {
-        var favorites = allFavorites()
-        favorites.removeAll { $0 == propertyCode }
-        UserDefaults.standard.setValue(favorites, forKey: favoritesKey)
+    func favoritedDate(_ propertyCode: String) -> Date? {
+        favorites[propertyCode]
     }
 
     func toggleFavorite(_ propertyCode: String) {
-        if isFavorite(propertyCode) {
-            removeFavorite(propertyCode)
+        var favs = favorites
+        if favs[propertyCode] == nil {
+            favs[propertyCode] = Date()
         } else {
-            addFavorite(propertyCode)
+            favs.removeValue(forKey: propertyCode)
         }
+        favorites = favs
     }
 }
