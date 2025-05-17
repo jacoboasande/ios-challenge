@@ -64,7 +64,7 @@ struct AdDetailView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color.black.opacity(0.6))
+                                .background(.ultraThinMaterial)
                                 .cornerRadius(8)
                                 .padding()
                         }
@@ -141,7 +141,7 @@ struct AdDetailView: View {
         Text("\(viewModel.listItem.price, specifier: "%.0f") \(viewModel.detail.priceInfo.currencySuffix)")
             .font(.title)
             .bold()
-            .foregroundColor(.green)
+            .foregroundColor(.accentColor)
     }
 
     @ViewBuilder
@@ -177,7 +177,7 @@ struct AdDetailView: View {
                 Text(expandedDescription ? "Leer menos" : "Leer más")
                     .font(.caption)
                     .fontWeight(.bold)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.accentColor)
             }
         }
     }

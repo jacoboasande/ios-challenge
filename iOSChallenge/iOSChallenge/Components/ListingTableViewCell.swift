@@ -42,14 +42,16 @@ class ListingTableViewCell: UITableViewCell {
         thumbnailImageView.clipsToBounds = true
         thumbnailImageView.layer.cornerRadius = 8
         addressLabel.font = .boldSystemFont(ofSize: 16)
+        addressLabel.textColor = .label
         secondAddressLabel.font = .boldSystemFont(ofSize: 16)
+        secondAddressLabel.textColor = .secondaryLabel
         priceLabel.font = .systemFont(ofSize: 14)
         priceLabel.textColor = .systemGreen
         infoLabel.font = .systemFont(ofSize: 12)
-        infoLabel.textColor = .darkGray
+        infoLabel.textColor = .secondaryLabel
         infoLabel.numberOfLines = 1
         secondInfoLabel.font = .systemFont(ofSize: 12)
-        secondInfoLabel.textColor = .darkGray
+        secondInfoLabel.textColor = .secondaryLabel
         secondInfoLabel.numberOfLines = 1
 
         expandButton.setTitle("▼", for: .normal)
@@ -80,6 +82,9 @@ class ListingTableViewCell: UITableViewCell {
         imagesCollectionView.isAccessibilityElement = true
         imagesCollectionView.accessibilityIdentifier = "carouselCollectionView"
 
+        contentView.backgroundColor = .systemBackground
+        backgroundColor = .clear
+
         let textStack = UIStackView(arrangedSubviews: [addressLabel, secondAddressLabel, priceLabel, infoLabel, secondInfoLabel])
         textStack.axis = .vertical
         textStack.spacing = 4
@@ -97,7 +102,8 @@ class ListingTableViewCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             thumbnailImageView.widthAnchor.constraint(equalToConstant: 80),
-            thumbnailImageView.heightAnchor.constraint(equalToConstant: 80),
+            thumbnailImageView.heightAnchor.constraint(equalTo: thumbnailImageView.widthAnchor),
+
             expandButton.widthAnchor.constraint(equalToConstant: 30),
 
             mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
@@ -122,7 +128,8 @@ class ListingTableViewCell: UITableViewCell {
         expandButton.setTitle(expand ? "▲" : "▼", for: .normal)
         imagesCollectionView.isHidden = !expand
         imagesCollectionView.layoutIfNeeded()
-        expandButton.backgroundColor = expand ? .systemGray : .systemBlue
+        expandButton.backgroundColor = expand ? .systemGray3 : .systemBlue
+        expandButton.layer.borderColor = UIColor.systemBackground.cgColor
         if expand {
             imagesCollectionView.accessibilityLabel = "carouselCollectionView"
             self.accessibilityIdentifier = "expandedCell"
