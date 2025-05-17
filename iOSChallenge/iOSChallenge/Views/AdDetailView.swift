@@ -148,21 +148,22 @@ struct AdDetailView: View {
     private var featuresSection: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("Habitaciones: \(viewModel.listItem.rooms)")
+                Text("\(NSLocalizedString("features.rooms", comment: "")): \(viewModel.listItem.rooms)")
                 Spacer()
-                Text("Baños: \(viewModel.listItem.bathrooms)")
+                Text("\(NSLocalizedString("features.bathrooms", comment: "")): \(viewModel.listItem.bathrooms)")
             }
             HStack {
-                Text("Superficie: \(String(format: "%.1f", viewModel.listItem.size)) m²")
+                Text("\(NSLocalizedString("features.size", comment: "")): \(String(format: "%.1f", viewModel.listItem.size)) m²")
                 Spacer()
-                Text("Aire Acondicionado: \(viewModel.listItem.features.hasAirConditioning ? "Sí" : "No")")
+                Text("\(NSLocalizedString("features.airConditioning", comment: "")): \(viewModel.listItem.features.hasAirConditioning ? NSLocalizedString("yes", comment: "") : NSLocalizedString("no", comment: ""))")
             }
             HStack {
-                Text("Parking: \(viewModel.listItem.parkingSpace?.hasParkingSpace ?? false ? "Sí" : "No")")
+                Text("\(NSLocalizedString("features.parking", comment: "")): \(viewModel.listItem.parkingSpace?.hasParkingSpace ?? false ? NSLocalizedString("yes", comment: "") : NSLocalizedString("no", comment: ""))")
             }
         }
         .font(.subheadline)
     }
+
 
     @ViewBuilder
     private var descriptionSection: some View {
@@ -174,10 +175,12 @@ struct AdDetailView: View {
             Button(action: {
                 withAnimation { expandedDescription.toggle() }
             }) {
-                Text(expandedDescription ? "Leer menos" : "Leer más")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundColor(.accentColor)
+                Text(expandedDescription
+                     ? NSLocalizedString("description.readLess", comment: "")
+                     : NSLocalizedString("description.readMore", comment: ""))
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundColor(.accentColor)
             }
         }
     }
@@ -188,9 +191,10 @@ struct AdDetailView: View {
             HStack(spacing: 6) {
                 SwiftUI.Image(systemName: "calendar")
                     .foregroundColor(.orange)
-                Text("Añadido a favoritos el \(dateString)")
+                Text(String(format: NSLocalizedString("favorite.addedOn", comment: ""), dateString))
                     .font(.caption)
                     .foregroundColor(.secondary)
+                
             }
             .padding(.top, 2)
         }

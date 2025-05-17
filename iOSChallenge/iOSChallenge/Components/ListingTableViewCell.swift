@@ -145,7 +145,7 @@ class ListingTableViewCell: UITableViewCell {
     }
 
     func configure(with listing: ListItem, isExpanded: Bool, isFavorite: Bool) {
-        addressLabel.text = "\(listing.propertyType.localized) en \(listing.address)"
+        addressLabel.text = String(format: NSLocalizedString("address.format", comment: ""), listing.propertyType.localized, listing.address)
         secondAddressLabel.text = "\(listing.province) - \(listing.neighborhood)"
         priceLabel.text = formattedPrice(listing.price)
         infoLabel.text = "📄 \(listing.operation.localized)"

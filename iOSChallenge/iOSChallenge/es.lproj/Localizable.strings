@@ -21,3 +21,17 @@
 "imagetag.unknown" = "Desconocido";
 "imagetag.views" = "Vistas";
 "imagetag.communalareas" = "Zonas comunes";
+
+"features.rooms" = "Habitaciones";
+"features.bathrooms" = "Baños";
+"features.size" = "Superficie";
+"features.airConditioning" = "Aire Acondicionado";
+"features.parking" = "Parking";
+"yes" = "Sí";
+"no" = "No";
+
+"description.readLess" = "Leer menos";
+"description.readMore" = "Leer más";
+"favorite.addedOn" = "Añadido a favoritos el %@";
+
+"address.format" = "%@ en %@";

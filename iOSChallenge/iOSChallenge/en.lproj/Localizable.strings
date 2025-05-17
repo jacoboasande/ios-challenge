@@ -21,3 +21,17 @@
 "imagetag.unknown" = "Unknown";
 "imagetag.views" = "Views";
 "imagetag.communalareas" = "Communal Areas";
+
+"features.rooms" = "Rooms";
+"features.bathrooms" = "Bathrooms";
+"features.size" = "Area";
+"features.airConditioning" = "Air Conditioning";
+"features.parking" = "Parking";
+"yes" = "Yes";
+"no" = "No";
+
+"description.readLess" = "Read less";
+"description.readMore" = "Read more";
+"favorite.addedOn" = "Added to favorites on %@";
+
+"address.format" = "%@ in %@";

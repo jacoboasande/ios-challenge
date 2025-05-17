@@ -39,7 +39,7 @@ class AdDetailViewModel: ObservableObject {
     }
 
     var titleLine1: String {
-        "\(detail.extendedPropertyType.localized) en \(listItem.address)"
+        String(format: NSLocalizedString("address.format", comment: ""), detail.extendedPropertyType.localized, listItem.address)
     }
     var titleLine2: String {
         "\(listItem.province) - \(listItem.neighborhood)"
