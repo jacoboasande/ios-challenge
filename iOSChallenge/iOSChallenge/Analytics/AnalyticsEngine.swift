@@ -11,7 +11,7 @@ final class AnalyticsEngine {
     static let shared = AnalyticsEngine()
     private let provider: AnalyticsProvider
 
-    private init(provider: AnalyticsProvider = IdealistaAnalyticsProvider()) {
+    init(provider: AnalyticsProvider = IdealistaAnalyticsProvider()) {
         self.provider = provider
     }
 
