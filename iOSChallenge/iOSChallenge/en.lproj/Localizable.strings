@@ -1,0 +1,38 @@
+//
+//  Localizable.strings
+//  iOSChallenge
+//
+//  Created by Jacobo Adrián Sande Veiga on 14/5/25.
+//
+
+"propertyType.flat" = "Flat";
+"propertyType.house" = "House";
+"operationType.sale" = "Sale";
+"operationType.rent" = "Rent";
+
+"imagetag.bathroom" = "Bathroom";
+"imagetag.bedroom" = "Bedroom";
+"imagetag.corridor" = "Corridor";
+"imagetag.energyCertification" = "Energy Certification";
+"imagetag.facade" = "Facade";
+"imagetag.hall" = "Hall";
+"imagetag.kitchen" = "Kitchen";
+"imagetag.livingRoom" = "Living Room";
+"imagetag.unknown" = "Unknown";
+"imagetag.views" = "Views";
+"imagetag.communalareas" = "Communal Areas";
+
+"features.rooms" = "Rooms";
+"features.bathrooms" = "Bathrooms";
+"features.size" = "Area";
+"features.airConditioning" = "Air Conditioning";
+"features.parking" = "Parking";
+"yes" = "Yes";
+"no" = "No";
+
+"description.readLess" = "Read less";
+"description.readMore" = "Read more";
+"favorite.addedOn" = "Added to favorites on %@";
+
+"address.format" = "%@ in %@";
+"location.title" = "Location";

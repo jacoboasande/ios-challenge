@@ -1,0 +1,61 @@
+//
+//  ListingViewModel.swift
+//  iOSChallenge
+//
+//  Created by Jacobo Adrián Sande Veiga on 14/5/25.
+//
+
+import Foundation
+
+class ListViewModel: ObservableObject {
+    @Published var listings: [ListItem] = []
+    @Published var isLoading: Bool = false
+    @Published var error: String? = nil
+    
+    private let apiService: APIServiceProtocol
+    
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
+    }
+    
+    func fetchListings() {
+        isLoading = true
+        error = nil
+        
+        apiService.fetchListings { result in
+            DispatchQueue.main.async {
+                self.isLoading = false
+                switch result {
+                case .success(let listings):
+                    self.listings = listings
+                case .failure(let error):
+                    self.error = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func isFavorite(propertyCode: String) -> Bool {
+        FavoritesManager.shared.isFavorite(propertyCode)
+    }
+
+    func toggleFavorite(propertyCode: String) {
+        if isFavorite(propertyCode: propertyCode) {
+            AnalyticsEngine.shared.trackRemoveFavorite(propertyCode: propertyCode, from: .listView)
+        } else {
+            AnalyticsEngine.shared.trackAddFavorite(propertyCode: propertyCode, from: .listView)
+        }
+        FavoritesManager.shared.toggleFavorite(propertyCode)
+        objectWillChange.send()
+    }
+
+    func adWasClicked(propertyCode: String) {
+        trackAdClicked(propertyCode: propertyCode)
+    }
+}
+
+private extension ListViewModel {
+    func trackAdClicked(propertyCode: String) {
+        AnalyticsEngine.shared.trackAdClicked(propertyCode: propertyCode)
+    }
+}
