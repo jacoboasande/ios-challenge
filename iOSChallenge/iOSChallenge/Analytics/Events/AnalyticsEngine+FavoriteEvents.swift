@@ -13,9 +13,7 @@ extension AnalyticsEngine {
             "propertyCode": propertyCode,
             "analyticsScreen": screen.rawValue
         ]
-        DispatchQueue.global(qos: .background).async {
-            self.trackEvent(name: "addFavorite", properties: props)
-        }
+        self.trackEvent(name: "addFavorite", properties: props)
     }
 
     func trackRemoveFavorite(propertyCode: String, from screen: AnalyticsScreen) {
@@ -23,8 +21,6 @@ extension AnalyticsEngine {
             "propertyCode": propertyCode,
             "analyticsScreen": screen.rawValue
         ]
-        DispatchQueue.global(qos: .background).async {
-            self.trackEvent(name: "removeFavorite", properties: props)
-        }
+        self.trackEvent(name: "removeFavorite", properties: props)
     }
 }

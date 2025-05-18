@@ -72,11 +72,9 @@ class ListingTableViewCell: UITableViewCell {
         favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
         favoriteButton.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
-        favoriteButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        favoriteButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         favoriteButton.accessibilityIdentifier = "starButton"
 
-        imagesCollectionView.isHidden = true
+//        imagesCollectionView.isHidden = true
         imagesCollectionView.dataSource = self
         imagesCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ImgCell")
         imagesCollectionView.isAccessibilityElement = true
@@ -99,13 +97,14 @@ class ListingTableViewCell: UITableViewCell {
         mainStack.spacing = 8
         contentView.addSubview(mainStack)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
+        mainStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
 
         NSLayoutConstraint.activate([
             thumbnailImageView.widthAnchor.constraint(equalToConstant: 80),
-            thumbnailImageView.heightAnchor.constraint(equalTo: thumbnailImageView.widthAnchor),
-
+            thumbnailImageView.heightAnchor.constraint(equalToConstant: 80),
             expandButton.widthAnchor.constraint(equalToConstant: 30),
-
+            favoriteButton.widthAnchor.constraint(equalToConstant: 30),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 30),
             mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -126,19 +125,10 @@ class ListingTableViewCell: UITableViewCell {
     func setExpanded(_ expand: Bool) {
         isExpanded = expand
         expandButton.setTitle(expand ? "▲" : "▼", for: .normal)
-        imagesCollectionView.isHidden = !expand
+//        imagesCollectionView.isHidden = !expand
         imagesCollectionView.layoutIfNeeded()
         expandButton.backgroundColor = expand ? .systemGray3 : .systemBlue
         expandButton.layer.borderColor = UIColor.systemBackground.cgColor
-        if expand {
-            imagesCollectionView.accessibilityLabel = "carouselCollectionView"
-            self.accessibilityIdentifier = "expandedCell"
-        } else {
-            imagesCollectionView.accessibilityLabel = nil
-            self.accessibilityIdentifier = nil
-        }
-
-
         if let heightConstraint = imagesCollectionView.constraints.first(where: { $0.firstAttribute == .height }) {
             heightConstraint.constant = expand ? 80 : 0
         }

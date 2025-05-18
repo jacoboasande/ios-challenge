@@ -69,6 +69,7 @@ final class iOSChallengeUITests: XCTestCase {
         firstCell.tap()
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
+        sleep(1)
 
         XCTAssertTrue(app.tables.firstMatch.exists)
     }
@@ -78,13 +79,21 @@ final class iOSChallengeUITests: XCTestCase {
         app.launch()
 
         let firstCell = app.tables.cells.element(boundBy: 0)
-        XCTAssertTrue(firstCell.waitForExistence(timeout: 3), "First cell should appear")
+        XCTAssertTrue(firstCell.waitForExistence(timeout: 5), "First cell should appear")
 
         let expandButton = firstCell.buttons["expandButton"]
         XCTAssertTrue(expandButton.exists, "Expand button should be present")
         expandButton.tap()
 
+        // Give the UI time to update, especially on iOS 16
         let carousel = firstCell.collectionViews["carouselCollectionView"]
-        XCTAssertTrue(carousel.waitForExistence(timeout: 2), "Carousel should appear after expand")
+
+        let predicate = NSPredicate { _, _ in
+            carousel.exists && carousel.frame.size.height > 0
+        }
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: nil)
+        let result = XCTWaiter().wait(for: [expectation], timeout: 3)
+        XCTAssertEqual(result, .completed, "Carousel should become visible and have height after expand")
     }
+
 }

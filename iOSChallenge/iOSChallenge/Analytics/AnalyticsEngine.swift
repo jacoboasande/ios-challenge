@@ -16,6 +16,8 @@ final class AnalyticsEngine {
     }
 
     func trackEvent(name: String, properties: [String: Any]) {
-        provider.trackEvent(name: name, properties: properties)
+        DispatchQueue.global(qos: .background).async {
+            self.provider.trackEvent(name: name, properties: properties)
+        }
     }
 }

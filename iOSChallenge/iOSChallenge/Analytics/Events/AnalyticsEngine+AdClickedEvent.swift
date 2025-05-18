@@ -12,8 +12,6 @@ extension AnalyticsEngine {
             "propertyCode": propertyCode,
             "analyticsScreen": AnalyticsScreen.listView.rawValue
         ]
-        DispatchQueue.global(qos: .background).async {
-            self.trackEvent(name: "adClicked", properties: props)
-        }
+        self.trackEvent(name: "adClicked", properties: props)
     }
 }

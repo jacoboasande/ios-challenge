@@ -8,7 +8,7 @@
 @testable import iOSChallenge
 
 class TestAnalyticsProvider: AnalyticsProvider {
-    private(set) var trackedEvents: [(name: String, properties: [String: Any])] = []
+    var trackedEvents: [(name: String, properties: [String: Any])] = []
 
     func trackEvent(name: String, properties: [String: Any]) {
         trackedEvents.append((name, properties))
