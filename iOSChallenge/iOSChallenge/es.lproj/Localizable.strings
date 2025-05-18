@@ -35,3 +35,5 @@
 "favorite.addedOn" = "Añadido a favoritos el %@";
 
 "address.format" = "%@ en %@";
+"location.title" = "Ubicación";
+

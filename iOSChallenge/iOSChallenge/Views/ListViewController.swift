@@ -89,7 +89,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let listing = viewModel.listings[indexPath.row]
 
         showLoading()
-
+        viewModel.adWasClicked(propertyCode: listing.propertyCode)
         APIService().fetchAdDetail(adId: Int(listing.propertyCode) ?? 0) { [weak self] result in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self?.hideLoading()

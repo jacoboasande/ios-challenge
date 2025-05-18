@@ -48,4 +48,14 @@ class ListViewModel: ObservableObject {
         FavoritesManager.shared.toggleFavorite(propertyCode)
         objectWillChange.send()
     }
+
+    func adWasClicked(propertyCode: String) {
+        trackAdClicked(propertyCode: propertyCode)
+    }
+}
+
+private extension ListViewModel {
+    func trackAdClicked(propertyCode: String) {
+        AnalyticsEngine.shared.trackAdClicked(propertyCode: propertyCode)
+    }
 }

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Location: Codable {
+struct Location: Codable, Identifiable {
     let latitude: Double
     let longitude: Double
+    var id: String { "\(latitude),\(longitude)" }
 }

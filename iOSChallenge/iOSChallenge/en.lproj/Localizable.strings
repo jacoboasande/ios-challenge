@@ -35,3 +35,4 @@
 "favorite.addedOn" = "Added to favorites on %@";
 
 "address.format" = "%@ in %@";
+"location.title" = "Location";

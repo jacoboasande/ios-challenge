@@ -6,12 +6,26 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct AdDetailView: View {
     @ObservedObject var viewModel: AdDetailViewModel
 
     @State private var selectedImageIndex = 0
     @State private var expandedDescription = false
+
+    @State private var mapRegion: MKCoordinateRegion
+
+    init(viewModel: AdDetailViewModel) {
+        self.viewModel = viewModel
+        let lat = viewModel.detail.ubication.latitude
+        let lon = viewModel.detail.ubication.longitude
+        _mapRegion = State(initialValue: MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: lat, longitude: lon),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ))
+    }
+
 
     var body: some View {
         ScrollView {
@@ -21,6 +35,7 @@ struct AdDetailView: View {
                 priceSection
                 featuresSection
                 favoriteSection
+                mapSection
                 descriptionSection
             }
             .padding()
@@ -164,6 +179,20 @@ struct AdDetailView: View {
         .font(.subheadline)
     }
 
+    @ViewBuilder
+    private var mapSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(NSLocalizedString("location.title", comment: ""))
+                .font(.headline)
+                .padding(.bottom, 4)
+
+            Map(coordinateRegion: $mapRegion, annotationItems: [viewModel.detail.ubication]) { location in
+                MapMarker(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), tint: .accentColor)
+            }
+            .frame(height: 200)
+            .cornerRadius(12)
+        }
+    }
 
     @ViewBuilder
     private var descriptionSection: some View {
